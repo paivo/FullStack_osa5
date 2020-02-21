@@ -5,7 +5,7 @@ const Notification = ({ message, type }) => {
     return null
   }
 
-  if (type === "success") {
+  if (type === 'success') {
     return (
       <div className="success">
         {message}
@@ -13,13 +13,11 @@ const Notification = ({ message, type }) => {
     )
   } else {
     return (
-    <div className="error">
-      {message}
-    </div>
-  )
+      <div className="error">
+        {message}
+      </div>
+    )
   }
-
-  
 }
 
 export default Notification

@@ -1,4 +1,4 @@
-import loginService from './services/login' 
+import loginService from './services/login'
 import Notification from './components/Notification'
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
@@ -6,13 +6,12 @@ import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import Togglable from './components/Togglable'
 
-
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
   const [errorType, setErrorType] = useState(null)
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [newView, setNewView] = useState(false)
 
@@ -37,13 +36,12 @@ const App = () => {
   }, [])
 
 
-  const handleViewChange = (event) => {
+  const handleViewChange = () => {
     setNewView(!newView)
   }
 
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
-  
     blogService
       .create(blogObject)
       .then(returnedBlog => {
@@ -67,7 +65,7 @@ const App = () => {
 
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -85,7 +83,7 @@ const App = () => {
     <form onSubmit={handleLogin}>
       <div>
         username
-          <input
+        <input
           type="text"
           value={username}
           name="Username"
@@ -94,7 +92,7 @@ const App = () => {
       </div>
       <div>
         password
-          <input
+        <input
           type="password"
           value={password}
           name="Password"
@@ -102,7 +100,7 @@ const App = () => {
         />
       </div>
       <button type="submit">login</button>
-    </form>      
+    </form>
   )
 
   const logOut = () => {
@@ -118,9 +116,7 @@ const App = () => {
 
   return (
     <div>
-      
       <Notification message={errorMessage} type={errorType} />
-      
 
       {user === null ?
         <div>
@@ -133,7 +129,7 @@ const App = () => {
           <p>
             {user.name} logged in
             <button onClick={logOut}>logout</button>
-          </p> 
+          </p>
           {blogForm()}
           <br></br>
           {blogs.map(blog =>
