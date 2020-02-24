@@ -13,7 +13,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [newView, setNewView] = useState(false)
 
   const blogFormRef = React.createRef()
 
@@ -35,11 +34,6 @@ const App = () => {
     }
   }, [])
 
-
-  const handleViewChange = () => {
-    setNewView(!newView)
-  }
-
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
     blogService
@@ -54,6 +48,37 @@ const App = () => {
     setTimeout(() => {
       setErrorMessage(null)
     }, 5000)
+  }
+
+  const likeBlog = (blogObject) => {
+    blogService
+      .update(blogObject.id, blogObject)
+      .then( setBlogs(blogs.map( blog => {
+        if (blog.id === blogObject.id) {
+          return { ...blog, likes: blog.likes +1 }
+        }
+        return (blog)
+      })))
+    setErrorMessage(
+      `a blog was liked by ${user.name}`
+    )
+    setErrorType('success')
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  }
+
+  const removeBlog = (blog) => {
+    if (window.confirm(`Remove blog ${blog.title} ${blog.author}`)) {
+      blogService.remove(blog.id)
+      setBlogs(blogs.filter(person2 => person2.id !== blog.id))
+      setErrorMessage(
+        `Deleted blog ${blog.title} ${blog.author}`
+      )
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
   }
 
   const handleLogin = async (event) => {
@@ -99,7 +124,7 @@ const App = () => {
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">login</button>
+      <button type="submit" id='login-button'>login</button>
     </form>
   )
 
@@ -110,9 +135,15 @@ const App = () => {
 
   const blogForm = () => (
     <Togglable buttonLabel='new blog' ref={blogFormRef}>
-      <BlogForm createBlog={addBlog} />
+      <BlogForm createBlog={addBlog}/>
     </Togglable>
   )
+
+  const sortedBlogs = (blogs) => {
+    return blogs.sort(function (a, b) {
+      return b.likes - a.likes
+    })
+  }
 
   return (
     <div>
@@ -132,8 +163,8 @@ const App = () => {
           </p>
           {blogForm()}
           <br></br>
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} handleViewChange={handleViewChange}  />
+          {sortedBlogs(blogs).map(blog =>
+            <Blog key={blog.id} blog={blog} user={user} likeBlog={likeBlog} removeBlog={removeBlog}/>
           )}
         </div>
       }

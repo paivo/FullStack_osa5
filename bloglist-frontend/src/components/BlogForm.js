@@ -39,19 +39,13 @@ const BlogForm = ({ createBlog }) => {
       <p>title:<input value={newTitle} onChange={handleTitleChange}/></p>
       <p>author:<input value={newAuthor} onChange={handleAuthorChange}/></p>
       <p>url:<input value={newUrl} onChange={handleUrlChange}/></p>
-      <button type="submit">create</button>
+      <button type="submit" id='addblog'>create</button>
     </form>
   )
 }
 
 BlogForm.propTypes = {
-  addBlog: PropTypes.func.isRequired,
-  handleTitleChange: PropTypes.func.isRequired,
-  handleAuthorChange: PropTypes.func.isRequired,
-  handleUrlChange: PropTypes.func.isRequired,
-  newTitle: PropTypes.string.isRequired,
-  newAuthor: PropTypes.string.isRequired,
-  newUrl: PropTypes.string.isRequired
+  createBlog: PropTypes.func.isRequired,
 }
 
 export default BlogForm
